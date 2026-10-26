@@ -1,0 +1,10 @@
+import { readFile } from "node:fs/promises";
+const accountId="7875b59b03d89fba1e40ce63ab502968",scriptName="pharos-docs-chain-agent",databaseId="b7d0c9bd-4ca9-43fc-a989-b899161e854f";
+const root=(process.env.XDG_CONFIG_HOME||"").replace(/\\/g,"/").replace(/\/$/,"");if(!root)throw new Error("XDG_CONFIG_HOME must point to the existing Wrangler config directory.");const credentialPath=`${root}/.wrangler/config/default.toml`;
+const config=await readFile(credentialPath,"utf8"),token=config.match(/^oauth_token\s*=\s*"([^"]+)"/m)?.[1];if(!token)throw new Error("Saved Wrangler OAuth token was not found.");
+const source=await readFile(new URL("../worker.js",import.meta.url),"utf8"),metadata={main_module:"worker.js",compatibility_date:"2026-10-01",compatibility_flags:["nodejs_compat"],bindings:[{type:"d1",name:"DB",id:databaseId}]};
+const form=new FormData();form.set("metadata",new Blob([JSON.stringify(metadata)],{type:"application/json"}));form.set("worker.js",new Blob([source],{type:"application/javascript+module"}),"worker.js");
+const endpoint=`https://api.cloudflare.com/client/v4/accounts/${accountId}/workers/scripts/${scriptName}`;
+const response=await fetch(endpoint,{method:"PUT",headers:{authorization:`Bearer ${token}`},body:form,signal:AbortSignal.timeout(60000)}),body=await response.json();if(!response.ok||!body.success)throw new Error(`Cloudflare upload failed (${response.status}): ${JSON.stringify(body.errors||body.messages||[])}`);
+const sub=await fetch(`${endpoint}/subdomain`,{method:"POST",headers:{authorization:`Bearer ${token}`,"content-type":"application/json"},body:JSON.stringify({enabled:true,previews_enabled:true}),signal:AbortSignal.timeout(30000)}),subBody=await sub.json();if(!sub.ok||!subBody.success)throw new Error(`Workers.dev enable failed (${sub.status}): ${JSON.stringify(subBody.errors||subBody.messages||[])}`);
+console.log(JSON.stringify({success:true,scriptName,versionId:body.result?.etag||body.result?.id||null,url:`https://${scriptName}.shoupeorg.workers.dev`},null,2));

@@ -1,0 +1,39 @@
+{
+  "evidenceVersion": "1",
+  "engineVersion": "docs-chain-agent/1.0.0",
+  "capturedAt": "2026-10-26T21:25:56.528Z",
+  "readOnly": true,
+  "endpoints": {
+    "docs": "https://docs.pharos.xyz/~gitbook/mcp",
+    "chain": "https://mcp.pharos.xyz/mcp"
+  },
+  "runs": [
+    {
+      "name": "eth-latest-answer",
+      "file": "v1-live-eth-latest-answer.json",
+      "status": "INTERPRETED",
+      "docsSources": 1,
+      "chainCallCount": 3,
+      "blockNumber": "21345188",
+      "rawOutput": "0x00000000000000000000000000000000000000000000007cd8decfeac2e9cf80"
+    },
+    {
+      "name": "btc-latest-timestamp",
+      "file": "v1-live-btc-latest-timestamp.json",
+      "status": "INTERPRETED",
+      "docsSources": 1,
+      "chainCallCount": 3,
+      "blockNumber": "21345232",
+      "rawOutput": "0x000000000000000000000000000000000000000000000000000000006adfbf73"
+    },
+    {
+      "name": "unsupported-refusal",
+      "file": "v1-live-unsupported-refusal.json",
+      "status": "DOCS_NOT_COVERED",
+      "docsSources": 1,
+      "chainCallCount": 0,
+      "blockNumber": null,
+      "rawOutput": null
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+import test from "node:test";import assert from "node:assert/strict";import {exportJson,exportMarkdown} from "../src/exports.js";
+const run={id:"r",result:{status:"INTERPRETED",request:{signature:"latestAnswer()",contract:"0x1"},docs:{explanation:{purpose:"price",returnType:"int256",units:"USD",limitations:[]},sources:[]},binding:{calldata:"0x50"},chain:{rawOutput:"0x00"},interpretation:{decoded:"0"},trace:[{order:1,service:"Developer Docs MCP",tools:["getPage"],status:"EXPLAINED"}]}};
+test("JSON and Markdown exports preserve status, binding and historical label",()=>{assert.match(exportJson(run),/HISTORICAL SAVED RUN/);const md=exportMarkdown(run);assert.match(md,/latestAnswer/);assert.match(md,/0x50/);assert.match(md,/No signing/) });

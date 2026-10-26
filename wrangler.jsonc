@@ -1,0 +1,9 @@
+{
+  "name": "pharos-docs-chain-agent",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "d1_databases": [{ "binding": "DB", "database_name": "pharos-docs-chain-agent", "database_id": "b7d0c9bd-4ca9-43fc-a989-b899161e854f", "migrations_dir": "migrations" }],
+  "observability": { "enabled": true }
+}
